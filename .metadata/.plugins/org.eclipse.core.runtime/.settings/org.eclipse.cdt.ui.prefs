@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+formattingConfirmScopeForEmptySelection=false
+formattingScopeForEmptySelection=statement
 spelling_locale_initialized=true
 useAnnotationsPrefPage=true
 useQuickDiffPrefPage=true
