@@ -65,14 +65,21 @@ int main(void)
   /* Configure the system clock to 180 MHz */
   SystemClock_Config();
 
-  /* Initialize BSP Led for LED2 */
+  /* P1_1 - Configura los LEDs */
   BSP_LED_Init(LED1);
   BSP_LED_Init(LED2);
   BSP_LED_Init(LED3);
-  /* Initialize BSP PB for BUTTON_USER */
+
+  /* P1_2 - Configura el pulsador */
   BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
 
+  /* P1_1 - Utiliza el enum de la placa definido en STM32F4XX_NUCLEO_144 */
   Led_TypeDef ledx = LED1;
+
+  /* P1_2 - Variables lectura de pulsador por flanco */
+  uint8_t estado_bot = BOT_OFF;
+  uint8_t estado_bot_ant = BOT_OFF;
+  uint8_t dir_leds = DIR_CREC;
 
 	/* Infinite loop */
 	while (1) {
@@ -81,13 +88,26 @@ int main(void)
 		BSP_LED_Toggle(ledx);
 		HAL_Delay(200);
 
-		if (BSP_PB_GetState(BUTTON_USER))
+		estado_bot = BSP_PB_GetState(BUTTON_USER);
+
+		if( estado_bot != estado_bot_ant)
 		{
+			if (estado_bot == BOT_ON)
+			{
+				dir_leds = ~dir_leds;
+			}
+		}
+
+		// Dirección creciente aumenta con la numeración de los LEDs
+		if (dir_leds != DIR_CREC)
+		{
+			/* P1_2 - Disminuye el LED a conmutar y reinicia en LED3 */
 			ledx = ledx > LED1 ? ledx - 1 : LED3;
 		}
 		else
 		{
-			ledx = ledx < LED3 ? ledx + 1 : LED1; //ledx %= LED3 + 1;
+			/* P1_1 - Aumenta el LED a conmutar y reinicia en LED1 */
+			ledx = ledx < LED3 ? ledx + 1 : LED1;
 		}
 	}
 }

@@ -65,11 +65,12 @@ int main(void)
   /* Configure the system clock to 180 MHz */
   SystemClock_Config();
 
-  /* Initialize BSP Led for LED2 */
+  /* P1_1 - Configura los LEDs */
   BSP_LED_Init(LED1);
   BSP_LED_Init(LED2);
   BSP_LED_Init(LED3);
 
+  /* P1_1 - Utiliza el enum de la placa definido en STM32F4XX_NUCLEO_144 */
   Led_TypeDef ledx = LED1;
 
   /* Infinite loop */
@@ -78,6 +79,8 @@ int main(void)
 	  BSP_LED_Toggle(ledx);
 	  HAL_Delay(200);
 	  BSP_LED_Toggle(ledx);
+
+	  /* P1_1 - Aumenta el LED a conmutar y reinicia al llegar a LED3 */
 	  ledx = ledx < LED3 ? ledx+1 : LED1; //ledx %= LED3 + 1;
 	  HAL_Delay(200);
   }

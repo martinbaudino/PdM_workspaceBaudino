@@ -30,6 +30,14 @@
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
+#define BOT_ON		1U
+#define BOT_OFF		0U
+#define DIR_CREC	0U
+#define DIR_DECR	1U
+
+
+
+
 /* User can use this section to tailor USARTx/UARTx instance used and associated
    resources */
 /* Definition for USARTx clock resources */
