@@ -49,37 +49,36 @@ static void Error_Handler(void);
   * @retval None
   */
 int main(void)
-{
-  /* STM32F4xx HAL library initialization:
-       - Configure the Flash prefetch
-       - Systick timer is configured by default as source of time base, but user 
-         can eventually implement his proper time base source (a general purpose 
-         timer for example or other time source), keeping in mind that Time base 
-         duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and 
-         handled in milliseconds basis.
-       - Set NVIC Group Priority to 4
-       - Low Level Initialization
-     */
-  HAL_Init();
+ {
+	/* STM32F4xx HAL library initialization:
+	 - Configure the Flash prefetch
+	 - Systick timer is configured by default as source of time base, but user
+	 can eventually implement his proper time base source (a general purpose
+	 timer for example or other time source), keeping in mind that Time base
+	 duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
+	 handled in milliseconds basis.
+	 - Set NVIC Group Priority to 4
+	 - Low Level Initialization
+	 */
+	HAL_Init();
 
-  /* Configure the system clock to 180 MHz */
-  SystemClock_Config();
+	/* Configure the system clock to 180 MHz */
+	SystemClock_Config();
 
-  /* Initialize BSP Led for LED2 */
-  BSP_LED_Init(LED1);
-  BSP_LED_Init(LED2);
-  BSP_LED_Init(LED3);
+	/* P1_1 - Configura los LEDs */
+	BSP_LED_Init(LED1);
+	BSP_LED_Init(LED2);
+	BSP_LED_Init(LED3);
 
-  Led_TypeDef ledx = LED1;
-  delay_t d1, d2, d3;
-  delayInit(&d1, 100);
-  delayInit(&d2, 500);
-  delayInit(&d3, 1000);
+	/* P2_2 - Variables y configuración de retardos no bloqueantes */
+	delay_t d1, d2, d3;
+	delayInit(&d1, 100);
+	delayInit(&d2, 500);
+	delayInit(&d3, 1000);
 
-  /* Infinite loop */
-  while (1)
-  {
-
+	/* Infinite loop */
+	while (1) {
+		/* P2_2 - Conmuta LEDs a distintas frecuencias */
 		if (delayRead(&d1)) {
 			BSP_LED_Toggle(LED1);
 		}
@@ -90,9 +89,7 @@ int main(void)
 			BSP_LED_Toggle(LED3);
 		}
 
-
-
-  }
+	}
 }
 
 
@@ -178,6 +175,7 @@ static void Error_Handler(void)
   }
 }
 
+/* P2_1_1 - Inicialización de retardo no bloqueante */
 void delayInit( delay_t * delay, tick_t duration )
 {
 	delay->duration = duration;
@@ -185,6 +183,7 @@ void delayInit( delay_t * delay, tick_t duration )
 	delay->startTime =  0;
 }
 
+/* P2_1_2 - Lee tiempo transcurrido. Comienza a medir con primer llamado */
 bool_t delayRead( delay_t * delay )
 {
 	if(delay->running == false)
@@ -206,6 +205,8 @@ bool_t delayRead( delay_t * delay )
 	}
 
 }
+
+/* P2_1_1_3 - Cambia tiempo de duración de retardo existente */
 void delayWrite( delay_t * delay, tick_t duration )
 {
 	delay->duration = duration;
