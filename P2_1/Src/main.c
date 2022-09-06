@@ -31,6 +31,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define TIME_LED1  100U
+#define TIME_LED2  500U
+#define TIME_LED3 1000U
+
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* UART handler declaration */
@@ -72,9 +77,9 @@ int main(void)
 
 	/* P2_2 - Variables y configuración de retardos no bloqueantes */
 	delay_t d1, d2, d3;
-	delayInit(&d1, 100);
-	delayInit(&d2, 500);
-	delayInit(&d3, 1000);
+	delayInit(&d1, TIME_LED1);
+	delayInit(&d2, TIME_LED2);
+	delayInit(&d3, TIME_LED3);
 
 	/* Infinite loop */
 	while (1) {
@@ -178,9 +183,18 @@ static void Error_Handler(void)
 /* P2_1_1 - Inicialización de retardo no bloqueante */
 void delayInit( delay_t * delay, tick_t duration )
 {
-	delay->duration = duration;
-	delay->running = false;
-	delay->startTime =  0;
+	if(delay != NULL && duration != 0 && duration < DELAY_MAX)
+	{
+		delay->duration = duration;
+		delay->running = false;
+		delay->startTime = 0;
+	}
+	else
+	{
+		/* Si se intenta configurar un delay muy grande genera error */
+		Error_Handler();
+	}
+
 }
 
 /* P2_1_2 - Lee tiempo transcurrido. Comienza a medir con primer llamado */

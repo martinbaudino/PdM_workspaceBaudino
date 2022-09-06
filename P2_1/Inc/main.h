@@ -43,6 +43,9 @@ typedef struct{
 
 
 /* Exported constants --------------------------------------------------------*/
+/* P2_1 - Tiempo máximo posible para delay en 10 segggundos */
+#define DELAY_MAX 10000U
+
 /* User can use this section to tailor USARTx/UARTx instance used and associated
    resources */
 /* Definition for USARTx clock resources */
@@ -65,8 +68,24 @@ typedef struct{
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 /* P2_1 - Declaraciones de funciones para retardos no bloqueantes */
+
+/* P2_1 - Función "delayInit"
+ * Configura un retardo no bloqueante de hasta DELAY_MAX milisegundos pero
+ * NO empieza a contar el tiempo
+ * */
 void delayInit( delay_t * delay, tick_t duration );
+
+/* P2_1 - Función "delayRead"
+ * Lee el estado de un delay no bloqueante
+ * En la primera llamada empieza a correr el tiempo
+ * Cuando se cumple el tiempo deja de correr el tiempo
+ * */
 bool_t delayRead( delay_t * delay );
+
+/* P2_1 - Función "delayWrite"
+ * Cambia el tiempo de duración de un delay no bloqueante ya configurado y
+ * que puede estar corriendo.
+ * */
 void delayWrite( delay_t * delay, tick_t duration );
 
 
