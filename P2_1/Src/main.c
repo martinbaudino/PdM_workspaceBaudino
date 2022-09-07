@@ -199,31 +199,33 @@ void delayInit( delay_t * delay, tick_t duration )
 
 /* P2_1_2 - Lee tiempo transcurrido. Comienza a medir con primer llamado */
 bool_t delayRead( delay_t * delay )
-{
-	if(delay->running == false)
-	{
-		delay->startTime = HAL_GetTick();
-		delay->running = true;
-		return false;
-	}
-	else
-	{
-		if(HAL_GetTick() >= (delay->startTime + delay->duration))
-		{
-			delay->running = false;
-			//delay->startTime = HAL_GetTick();
-			return true;
+ {
+	bool_t estado = false;
+
+	if (delay != NULL) {
+		if (delay->running == false) {
+			delay->startTime = HAL_GetTick();
+			delay->running = true;
+			estado = false;
+		} else {
+			if (HAL_GetTick() >= (delay->startTime + delay->duration)) {
+				delay->running = false;
+				estado = true;
+			} else
+				estado = false;
 		}
-		else
-			return false;
 	}
-
+	else {
+		estado = false;
+	}
+	return estado;
 }
-
 /* P2_1_1_3 - Cambia tiempo de duración de retardo existente */
 void delayWrite( delay_t * delay, tick_t duration )
 {
-	delay->duration = duration;
+	if(delay != NULL && duration != 0 && duration < DELAY_MAX){
+		delay->duration = duration;
+	}
 }
 
 

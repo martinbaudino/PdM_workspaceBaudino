@@ -1,5 +1,6 @@
 # PdM_workspaceBaudino
 STM32CubeIDE workspace para Programación de microcontroladores - CESE - FIUBA
+Resolución de Trabajos Prácticos de Martín Sebastián Baudino
 
 ## Práctica 1
 * Ejercicio 1: Implementa un generador de secuencia LED1-LED2-LED3 en placa NUCLEO-F429ZI.
