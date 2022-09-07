@@ -1,40 +1,39 @@
- /**
-  ******************************************************************************
-  * @file    UART/UART_Printf/Src/main.c
-  * @author  MCD Application Team
-  * @brief   This example shows how to retarget the C library printf function
-  *          to the UART.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
+/**
+ ******************************************************************************
+ * @file    UART/UART_Printf/Src/main.c
+ * @author  MCD Application Team
+ * @brief   This example shows how to retarget the C library printf function
+ *          to the UART.
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ ******************************************************************************
+ */
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
 /** @addtogroup STM32F4xx_HAL_Examples
-  * @{
-  */
+ * @{
+ */
 
 /** @addtogroup UART_Printf
-  * @{
-  */
+ * @{
+ */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define TIME_LED1  100U
 #define TIME_LED2  500U
 #define TIME_LED3 1000U
-
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -49,12 +48,11 @@ static void Error_Handler(void);
 /* Private functions ---------------------------------------------------------*/
 
 /**
-  * @brief  Main program
-  * @param  None
-  * @retval None
-  */
-int main(void)
- {
+ * @brief  Main program
+ * @param  None
+ * @retval None
+ */
+int main(void) {
 	/* STM32F4xx HAL library initialization:
 	 - Configure the Flash prefetch
 	 - Systick timer is configured by default as source of time base, but user
@@ -97,137 +95,129 @@ int main(void)
 	}
 }
 
-
 /**
-  * @brief  System Clock Configuration
-  *         The system Clock is configured as follow : 
-  *            System Clock source            = PLL (HSE)
-  *            SYSCLK(Hz)                     = 180000000
-  *            HCLK(Hz)                       = 180000000
-  *            AHB Prescaler                  = 1
-  *            APB1 Prescaler                 = 4
-  *            APB2 Prescaler                 = 2
-  *            HSE Frequency(Hz)              = 8000000
-  *            PLL_M                          = 8
-  *            PLL_N                          = 360
-  *            PLL_P                          = 2
-  *            PLL_Q                          = 7
-  *            PLL_R                          = 2
-  *            VDD(V)                         = 3.3
-  *            Main regulator output voltage  = Scale1 mode
-  *            Flash Latency(WS)              = 5
-  * @param  None
-  * @retval None
-  */
-static void SystemClock_Config(void)
-{
-  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-  RCC_OscInitTypeDef RCC_OscInitStruct;
+ * @brief  System Clock Configuration
+ *         The system Clock is configured as follow :
+ *            System Clock source            = PLL (HSE)
+ *            SYSCLK(Hz)                     = 180000000
+ *            HCLK(Hz)                       = 180000000
+ *            AHB Prescaler                  = 1
+ *            APB1 Prescaler                 = 4
+ *            APB2 Prescaler                 = 2
+ *            HSE Frequency(Hz)              = 8000000
+ *            PLL_M                          = 8
+ *            PLL_N                          = 360
+ *            PLL_P                          = 2
+ *            PLL_Q                          = 7
+ *            PLL_R                          = 2
+ *            VDD(V)                         = 3.3
+ *            Main regulator output voltage  = Scale1 mode
+ *            Flash Latency(WS)              = 5
+ * @param  None
+ * @retval None
+ */
+static void SystemClock_Config(void) {
+	RCC_ClkInitTypeDef RCC_ClkInitStruct;
+	RCC_OscInitTypeDef RCC_OscInitStruct;
 
-  /* Enable Power Control clock */
-  __HAL_RCC_PWR_CLK_ENABLE();
-  
-  /* The voltage scaling allows optimizing the power consumption when the device is 
-     clocked below the maximum system frequency, to update the voltage scaling value 
-     regarding system frequency refer to product datasheet.  */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-  
-  /* Enable HSE Oscillator and activate PLL with HSE as source */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 360;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 7;
-  if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
-  
-  if(HAL_PWREx_EnableOverDrive() != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
-  
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
-     clocks dividers */
-  RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;  
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;  
-  if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
+	/* Enable Power Control clock */
+	__HAL_RCC_PWR_CLK_ENABLE();
+
+	/* The voltage scaling allows optimizing the power consumption when the device is
+	 clocked below the maximum system frequency, to update the voltage scaling value
+	 regarding system frequency refer to product datasheet.  */
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+	/* Enable HSE Oscillator and activate PLL with HSE as source */
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+	RCC_OscInitStruct.PLL.PLLM = 8;
+	RCC_OscInitStruct.PLL.PLLN = 360;
+	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+	RCC_OscInitStruct.PLL.PLLQ = 7;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+		/* Initialization Error */
+		Error_Handler();
+	}
+
+	if (HAL_PWREx_EnableOverDrive() != HAL_OK) {
+		/* Initialization Error */
+		Error_Handler();
+	}
+
+	/* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+	 clocks dividers */
+	RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK
+			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK) {
+		/* Initialization Error */
+		Error_Handler();
+	}
 }
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @param  None
-  * @retval None
-  */
-static void Error_Handler(void)
-{
-  /* Turn LED2 on */
-  BSP_LED_On(LED2);
-  while (1)
-  {
-  }
+ * @brief  This function is executed in case of error occurrence.
+ * @param  None
+ * @retval None
+ */
+static void Error_Handler(void) {
+	/* Turn LED2 on */
+	BSP_LED_On(LED2);
+	while (1) {
+	}
 }
 
-/* P2_1_1 - Inicialización de retardo no bloqueante */
-void delayInit( delay_t * delay, tick_t duration )
-{
-	if(delay != NULL && duration != 0 && duration < DELAY_MAX)
-	{
+void delayInit(delay_t *delay, tick_t duration) {
+	// Comprueba delay válido antes de configurarlo
+	if (delay != NULL && duration != 0 && duration < DELAY_MAX) {
 		delay->duration = duration;
 		delay->running = false;
 		delay->startTime = 0;
-	}
-	else
-	{
-		/* Si se intenta configurar un delay muy grande genera error */
+	} else {
+		// Si se intenta configurar un delay muy grande genera error
 		Error_Handler();
 	}
 
 }
 
-/* P2_1_2 - Lee tiempo transcurrido. Comienza a medir con primer llamado */
-bool_t delayRead( delay_t * delay )
- {
-	bool_t estado = false;
+bool_t delayRead(delay_t *delay) {
+	bool_t delay_state;
 
+	// Previene lectura de delays inválidos por punteros no inicializados
 	if (delay != NULL) {
 		if (delay->running == false) {
+			// Primera llamada, empieza a contar el tiempo
 			delay->startTime = HAL_GetTick();
 			delay->running = true;
-			estado = false;
+			delay_state = false;
 		} else {
-			if (HAL_GetTick() >= (delay->startTime + delay->duration)) {
+			// Llamadas posteriores a la primera
+			// Haciendo la resta se tiene en cuenta el desborde del uwTick
+			if ((HAL_GetTick() - delay->startTime) >= delay->duration) {
 				delay->running = false;
-				estado = true;
+				delay_state = true;
 			} else
-				estado = false;
+				delay_state = false;
 		}
+	} else {
+		delay_state = false;
 	}
-	else {
-		estado = false;
-	}
-	return estado;
-}
-/* P2_1_1_3 - Cambia tiempo de duración de retardo existente */
-void delayWrite( delay_t * delay, tick_t duration )
-{
-	if(delay != NULL && duration != 0 && duration < DELAY_MAX){
-		delay->duration = duration;
-	}
+	return delay_state;
 }
 
+void delayWrite(delay_t *delay, tick_t duration) {
+	// Comprueba delay válido antes de modificarlo
+	if (delay != NULL && duration != 0 && duration < DELAY_MAX) {
+		delay->duration = duration;
+	} else {
+
+	}
+}
 
 #ifdef  USE_FULL_ASSERT
 /**
@@ -250,11 +240,11 @@ void assert_failed(uint8_t *file, uint32_t line)
 #endif
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
