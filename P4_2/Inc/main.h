@@ -30,8 +30,6 @@
 
 
 /* Exported constants --------------------------------------------------------*/
-/* P2_1 - Tiempo máximo posible para delay en 10 seggundos */
-#define DELAY_MAX 10000U
 
 /* User can use this section to tailor USARTx/UARTx instance used and associated
  resources */

@@ -33,8 +33,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define TIME_LED_A 100U
-#define TIME_LED_B 500U
+#define TIME_LED2_A 100U	// Conmutación cada 100ms
+#define TIME_LED2_B 500U	// Conmutación cada 500ms
 
 
 /* Private macro -------------------------------------------------------------*/
@@ -82,22 +82,22 @@ int main(void) {
 
 	/* P3_2 - Variables y configuración de retardo no bloqueante */
 	delay_t led_delay;
-	delayInit(&led_delay, TIME_LED_A);
+	delayInit(&led_delay, TIME_LED2_A);
 
-	/* P4_1 - Inicializa la FSM */
+	/* P4_1 - Inicializa la MEF */
 	debounceFSM_init();
 
 	/* Infinite loop */
 	while (1) {
-		/* P4_1 - Ejecución FSM anti-rebotes */
+		/* P4_1 - Ejecución MEF anti-rebotes */
 		debounceFSM_update();
 
 		/* P4_2 - Retardo que cambia al presionar el pulsador */
-		if (readKey()) {
-			if (led_delay.duration == TIME_LED_A)
-				delayWrite(&led_delay, TIME_LED_B);
-			else
-				delayWrite(&led_delay, TIME_LED_A);
+		if (readKey()) {	// Si se detectó una pulsación efectiva y
+			if (led_delay.duration == TIME_LED2_A)	// está en la frecuencia "A"
+				delayWrite(&led_delay, TIME_LED2_B);// conmuta a frecuencia "B"
+			else									// Si no,
+				delayWrite(&led_delay, TIME_LED2_A);// conmuta a frecuencia "A"
 		}
 
 		/* P4_2 - Parpadeo de LED Testigo */
@@ -106,8 +106,6 @@ int main(void) {
 		}
 	}
 }
-
-
 
 
 /**

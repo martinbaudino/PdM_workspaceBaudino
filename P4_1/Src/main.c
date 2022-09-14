@@ -96,12 +96,12 @@ int main(void) {
 	/* P1_2 - Configura el pulsador */
 	BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
 
-	/* P4_1 - Inicializa la FSM */
+	/* P4_1 - Inicializa la MEF */
 	debounceFSM_init();
 
 	/* Infinite loop */
 	while (1) {
-		/* P4_1 - Ejecución FSM anti-rebotes */
+		/* P4_1 - Ejecución MEF anti-rebotes */
 		debounceFSM_update();
 	}
 }

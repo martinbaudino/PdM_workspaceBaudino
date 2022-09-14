@@ -37,15 +37,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_ranges 00000478  00000000  00000000  00026b70  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00025232  00000000  00000000  00026fe8  2**0
+ 17 .debug_macro  0002522c  00000000  00000000  00026fe8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00008596  00000000  00000000  0004c21a  2**0
+ 18 .debug_line   00008597  00000000  00000000  0004c214  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000e12a9  00000000  00000000  000547b0  2**0
+ 19 .debug_str    000e12ab  00000000  00000000  000547ab  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000050  00000000  00000000  00135a59  2**0
+ 20 .comment      00000050  00000000  00000000  00135a56  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  00001240  00000000  00000000  00135aac  2**2
+ 21 .debug_frame  00001240  00000000  00000000  00135aa8  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -353,11 +353,11 @@ Disassembly of section .text:
  80004ee:	bf00      	nop
 
 080004f0 <debounceFSM_init>:
-// P4_2 - Variable de estado (global)
-static debounceState_t curr_state;
-
-static bool_t pending_pressed;
-
+ *
+ * Configura todos los parámetros necesarios para que la MEF comience en un
+ * estado definido, con el botón libre, los LEDs apagados y el temporizador
+ * configurado pero parado.
+ */
 void debounceFSM_init(void){
  80004f0:	b580      	push	{r7, lr}
  80004f2:	af00      	add	r7, sp, #0
@@ -387,11 +387,15 @@ void debounceFSM_init(void){
  8000520:	20000045 	.word	0x20000045
 
 08000524 <debounceFSM_update>:
-
-
+ *
+ * Realiza lectura del Pin conectado al pulsador y actualiza el estado
+ * correspondiente, detectando si las transiciones son rebotes o acciones
+ * efectivas sobre el pulsador.
+ */
 void debounceFSM_update(void) {
  8000524:	b580      	push	{r7, lr}
  8000526:	af00      	add	r7, sp, #0
+
 	switch (curr_state) {
  8000528:	4b30      	ldr	r3, [pc, #192]	; (80005ec <debounceFSM_update+0xc8>)
  800052a:	781b      	ldrb	r3, [r3, #0]
@@ -411,10 +415,10 @@ void debounceFSM_update(void) {
  800054e:	4603      	mov	r3, r0
  8000550:	2b01      	cmp	r3, #1
  8000552:	d142      	bne.n	80005da <debounceFSM_update+0xb6>
-			delayRead(&bounce_delay);
+			delayRead(&bounce_delay);	// Si detecta flanco descendente cambia
  8000554:	4826      	ldr	r0, [pc, #152]	; (80005f0 <debounceFSM_update+0xcc>)
  8000556:	f000 f894 	bl	8000682 <delayRead>
-			curr_state = BUTTON_FALLING;
+			curr_state = BUTTON_FALLING;// el estado e inicia el retardo
  800055a:	4b24      	ldr	r3, [pc, #144]	; (80005ec <debounceFSM_update+0xc8>)
  800055c:	2201      	movs	r2, #1
  800055e:	701a      	strb	r2, [r3, #0]
@@ -423,7 +427,7 @@ void debounceFSM_update(void) {
  8000560:	e03b      	b.n	80005da <debounceFSM_update+0xb6>
 
 	case BUTTON_FALLING:
-		if (delayRead(&bounce_delay)) {
+		if (delayRead(&bounce_delay)) {		// Si transcurrido el tiempo sigue
  8000562:	4823      	ldr	r0, [pc, #140]	; (80005f0 <debounceFSM_update+0xcc>)
  8000564:	f000 f88d 	bl	8000682 <delayRead>
  8000568:	4603      	mov	r3, r0
@@ -435,19 +439,19 @@ void debounceFSM_update(void) {
  8000574:	4603      	mov	r3, r0
  8000576:	2b01      	cmp	r3, #1
  8000578:	d105      	bne.n	8000586 <debounceFSM_update+0x62>
-				curr_state = BUTTON_DOWN;
+				curr_state = BUTTON_DOWN;	//  BAJO, cambia el estado y ejecuta
  800057a:	4b1c      	ldr	r3, [pc, #112]	; (80005ec <debounceFSM_update+0xc8>)
  800057c:	2202      	movs	r2, #2
  800057e:	701a      	strb	r2, [r3, #0]
-				buttonPressed();
+				buttonPressed();		 	//  acción correspondiente
  8000580:	f000 f838 	bl	80005f4 <buttonPressed>
 			} else {
-				curr_state = BUTTON_UP;
+				curr_state = BUTTON_UP;		// Si no, vuelve al estado anterior
 			}
 		}
 		break;
  8000584:	e02b      	b.n	80005de <debounceFSM_update+0xba>
-				curr_state = BUTTON_UP;
+				curr_state = BUTTON_UP;		// Si no, vuelve al estado anterior
  8000586:	4b19      	ldr	r3, [pc, #100]	; (80005ec <debounceFSM_update+0xc8>)
  8000588:	2200      	movs	r2, #0
  800058a:	701a      	strb	r2, [r3, #0]
@@ -461,10 +465,10 @@ void debounceFSM_update(void) {
  8000594:	4603      	mov	r3, r0
  8000596:	2b00      	cmp	r3, #0
  8000598:	d123      	bne.n	80005e2 <debounceFSM_update+0xbe>
-			delayRead(&bounce_delay);
+			delayRead(&bounce_delay);	// Si detecta flanco ascendente cambia
  800059a:	4815      	ldr	r0, [pc, #84]	; (80005f0 <debounceFSM_update+0xcc>)
  800059c:	f000 f871 	bl	8000682 <delayRead>
-			curr_state = BUTTON_RAISING;
+			curr_state = BUTTON_RAISING;// el estado e inicia el retardo
  80005a0:	4b12      	ldr	r3, [pc, #72]	; (80005ec <debounceFSM_update+0xc8>)
  80005a2:	2203      	movs	r2, #3
  80005a4:	701a      	strb	r2, [r3, #0]
@@ -473,7 +477,7 @@ void debounceFSM_update(void) {
  80005a6:	e01c      	b.n	80005e2 <debounceFSM_update+0xbe>
 
 	case BUTTON_RAISING:
-		if (delayRead(&bounce_delay)) {
+		if (delayRead(&bounce_delay)) {		// Si transcurrido el tiempo sigue
  80005a8:	4811      	ldr	r0, [pc, #68]	; (80005f0 <debounceFSM_update+0xcc>)
  80005aa:	f000 f86a 	bl	8000682 <delayRead>
  80005ae:	4603      	mov	r3, r0
@@ -485,29 +489,29 @@ void debounceFSM_update(void) {
  80005ba:	4603      	mov	r3, r0
  80005bc:	2b00      	cmp	r3, #0
  80005be:	d105      	bne.n	80005cc <debounceFSM_update+0xa8>
-				curr_state = BUTTON_UP;
+				curr_state = BUTTON_UP;		// ALTO, cambia el estado y ejecuta
  80005c0:	4b0a      	ldr	r3, [pc, #40]	; (80005ec <debounceFSM_update+0xc8>)
  80005c2:	2200      	movs	r2, #0
  80005c4:	701a      	strb	r2, [r3, #0]
-				buttonReleased();
+				buttonReleased();			//  acción correspondiente
  80005c6:	f000 f821 	bl	800060c <buttonReleased>
 			} else {
-				curr_state = BUTTON_DOWN;
+				curr_state = BUTTON_DOWN;	// Si no, vuelve al estado anterior
 			}
 		}
 		break;
  80005ca:	e00c      	b.n	80005e6 <debounceFSM_update+0xc2>
-				curr_state = BUTTON_DOWN;
+				curr_state = BUTTON_DOWN;	// Si no, vuelve al estado anterior
  80005cc:	4b07      	ldr	r3, [pc, #28]	; (80005ec <debounceFSM_update+0xc8>)
  80005ce:	2202      	movs	r2, #2
  80005d0:	701a      	strb	r2, [r3, #0]
 		break;
  80005d2:	e008      	b.n	80005e6 <debounceFSM_update+0xc2>
 	default:
-		//Si algo modificó la variable estadoActual
-		// a un estado no válido llevo la MEF a un
-		// lugar seguro, por ejemplo, la reinicio:
-		//controlDeErrores();
+		/**
+		 * Si algo modificó la variable curr_state a un estado no válido lleva
+		 * la MEF a un lugar seguro, en este caso la inicializa nuevamente
+		 */
 		debounceFSM_init();
  80005d4:	f7ff ff8c 	bl	80004f0 <debounceFSM_init>
 		break;
@@ -531,8 +535,11 @@ void debounceFSM_update(void) {
  80005f0:	20000038 	.word	0x20000038
 
 080005f4 <buttonPressed>:
-
-
+/**
+ * @fn void buttonPressed(void)
+ * @brief Acción correspondiente a pulsado efectivo del pulsador
+ *
+ */
 static void buttonPressed(void){
  80005f4:	b580      	push	{r7, lr}
  80005f6:	af00      	add	r7, sp, #0
@@ -549,8 +556,11 @@ static void buttonPressed(void){
  8000608:	20000045 	.word	0x20000045
 
 0800060c <buttonReleased>:
-
-
+/**
+ * @fn void buttonReleased(void)
+ * @brief Acción correspondiente a liberación efectiva del pulsador
+ *
+ */
 static void buttonReleased(void){
  800060c:	b580      	push	{r7, lr}
  800060e:	af00      	add	r7, sp, #0
@@ -563,7 +573,11 @@ static void buttonReleased(void){
 	...
 
 0800061c <readKey>:
-
+ * devolver true o false si la tecla fue presionada.  Si devuelve true,
+ * debe resetear (poner en false) el estado de la variable.
+ *
+ * @return
+ */
 bool readKey(void){
  800061c:	b480      	push	{r7}
  800061e:	b083      	sub	sp, #12
@@ -4129,40 +4143,40 @@ int main(void) {
 
 	/* P3_2 - Variables y configuración de retardo no bloqueante */
 	delay_t led_delay;
-	delayInit(&led_delay, TIME_LED_A);
+	delayInit(&led_delay, TIME_LED2_A);
  8001a80:	1d3b      	adds	r3, r7, #4
  8001a82:	2164      	movs	r1, #100	; 0x64
  8001a84:	4618      	mov	r0, r3
  8001a86:	f7fe fddb 	bl	8000640 <delayInit>
 
-	/* P4_1 - Inicializa la FSM */
+	/* P4_1 - Inicializa la MEF */
 	debounceFSM_init();
  8001a8a:	f7fe fd31 	bl	80004f0 <debounceFSM_init>
 
 	/* Infinite loop */
 	while (1) {
-		/* P4_1 - Ejecución FSM anti-rebotes */
+		/* P4_1 - Ejecución MEF anti-rebotes */
 		debounceFSM_update();
  8001a8e:	f7fe fd49 	bl	8000524 <debounceFSM_update>
 
 		/* P4_2 - Retardo que cambia al presionar el pulsador */
-		if (readKey()) {
+		if (readKey()) {	// Si se detectó una pulsación efectiva y
  8001a92:	f7fe fdc3 	bl	800061c <readKey>
  8001a96:	4603      	mov	r3, r0
  8001a98:	2b00      	cmp	r3, #0
  8001a9a:	d00e      	beq.n	8001aba <main+0x62>
-			if (led_delay.duration == TIME_LED_A)
+			if (led_delay.duration == TIME_LED2_A)	// está en la frecuencia "A"
  8001a9c:	68bb      	ldr	r3, [r7, #8]
  8001a9e:	2b64      	cmp	r3, #100	; 0x64
  8001aa0:	d106      	bne.n	8001ab0 <main+0x58>
-				delayWrite(&led_delay, TIME_LED_B);
+				delayWrite(&led_delay, TIME_LED2_B);// conmuta a frecuencia "B"
  8001aa2:	1d3b      	adds	r3, r7, #4
  8001aa4:	f44f 71fa 	mov.w	r1, #500	; 0x1f4
  8001aa8:	4618      	mov	r0, r3
  8001aaa:	f7fe fe1d 	bl	80006e8 <delayWrite>
  8001aae:	e004      	b.n	8001aba <main+0x62>
-			else
-				delayWrite(&led_delay, TIME_LED_A);
+			else									// Si no,
+				delayWrite(&led_delay, TIME_LED2_A);// conmuta a frecuencia "A"
  8001ab0:	1d3b      	adds	r3, r7, #4
  8001ab2:	2164      	movs	r1, #100	; 0x64
  8001ab4:	4618      	mov	r0, r3
