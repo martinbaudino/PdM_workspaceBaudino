@@ -17,3 +17,6 @@ Resolución de Trabajos Prácticos de Martín Sebastián Baudino
 * Punto 1: Carpeta P3. Mueve las declaraciones de las funciones del temporizador a los archivos "API_delay.h" y las definiciones a "API_delay.c", ambas dentro de la carpeta "Drivers/API".
 * Punto 2: Carpeta P3. Implementa un un programa que genera secuencias aleatorias para conmutación utilizando un vector de LEDs y retardos no bloqueantes en la NUCLEO-F429ZI.
 
+## Práctica 4:
+* Punto 1: Carpeta **P4_1** - Implementa la MEF para filtro anti-rebotes en la aplicación principal. Ver README.md en carpeta correspondiente.
+* Punto 2: Carpeta **P4_2** - Mueve la MEF a **API_debounce** e implementa conmutación de **LED2** a frecuencia variable persionanro el pulsador **USER**. Ver README.md en carpeta correspondiente.
