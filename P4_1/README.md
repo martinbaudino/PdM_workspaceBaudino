@@ -4,7 +4,7 @@
 
 * Implementar una MEF anti-rebote que permita leer el estado del pulsador de la placa NUCLEO-F429ZI y generar acciones o eventos ante un flanco descendente o ascendente, de acuerdo al siguiente diagrama:
 
-[MEF filtro anti-rebotes](MEF.png)
+![MEF filtro anti-rebotes](MEF.png)
 
 * El estado inicial de la MEF debe ser BUTTON_UP.
 
