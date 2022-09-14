@@ -35,36 +35,8 @@ typedef struct {
 /* Exported functions ------------------------------------------------------- */
 /* P2_1 - Declaraciones de funciones para retardos no bloqueantes */
 
-/**
- * @fn void delayInit(delay_t*, tick_t)
- * @brief	P2_1_1 - Configura un retardo no bloqueante de hasta DELAY_MAX
- * 			milisegundos pero NO empieza a contar el tiempo
- *
- * @param delay	puntero a estructura de temporizador
- * @param duration	retardo deseado
- */
 void delayInit(delay_t *delay, tick_t duration);
-
-/**
- * @fn bool_t delayRead(delay_t*)
- * @brief P2_1_2 - Lee el estado de un delay no bloqueante. En la primera llamada
- * 		  empieza a correr el tiempo. Cuando se cumple el tiempo detiene el
- * 		  contador.
- *
- * @param delay	puntero a estructura de temporizador
- * @return	Devuelve "false" si no transcurrió el tiempo del delay, y
- * 			"true" cuando se pasó la cuenta.
- */
 bool_t delayRead(delay_t *delay);
-
-/**
- * @fn void delayWrite(delay_t*, tick_t)
- * @brief 	P2_1_3 - Cambia el tiempo de duración de un delay no bloqueante ya
- * 			configurado y que puede estar corriendo.
- *
- * @param delay	puntero a estructura de temporizador
- * @param duration	retardo deseado
- */
 void delayWrite(delay_t *delay, tick_t duration);
 
 #endif /* API_INC_API_DELAY_H_ */

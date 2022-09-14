@@ -8,6 +8,16 @@
 
 // P3_1: Mueve las definiciones de las funciones de termporización a su propio módulo
 
+/**
+ * @fn void delayInit(delay_t*, tick_t)
+ * @brief	P2_1_1 - Inicializa retardo no bloqueante
+ *
+ * Configura un retardo no bloqueante de hasta DELAY_MAX milisegundos pero
+ * NO empieza a contar el tiempo
+ *
+ * @param delay	puntero a estructura de temporizador
+ * @param duration	retardo deseado
+ */
 void delayInit(delay_t *delay, tick_t duration) {
 	// Comprueba delay válido antes de configurarlo
 	if (delay != NULL && duration != 0 && duration < DELAY_MAX) {
@@ -25,6 +35,17 @@ void delayInit(delay_t *delay, tick_t duration) {
 
 }
 
+/**
+ * @fn bool_t delayRead(delay_t*)
+ * @brief P2_1_2 - Lee el estado de un delay no bloqueante.
+ *
+ * En la primera llamada empieza a correr el tiempo. Cuando se cumple el
+ * tiempo detiene el contador.
+ *
+ * @param delay	puntero a estructura de temporizador
+ * @return	Devuelve "false" si no transcurrió el tiempo del delay, y
+ * 			"true" cuando se pasó la cuenta.
+ */
 bool_t delayRead(delay_t *delay) {
 	bool_t delay_state;
 
@@ -50,6 +71,15 @@ bool_t delayRead(delay_t *delay) {
 	return delay_state;
 }
 
+/**
+ * @fn void delayWrite(delay_t*, tick_t)
+ * @brief 	P2_1_3 - Cambia el tiempo de duración de un delay no bloqueante
+ *
+ * El delay debe estar inicializado pero estar corriendo o detenido.
+ *
+ * @param delay	puntero a estructura de temporizador
+ * @param duration	retardo deseado
+ */
 void delayWrite(delay_t *delay, tick_t duration) {
 	// Comprueba delay válido antes de modificarlo
 	if (delay != NULL && duration != 0 && duration < DELAY_MAX) {

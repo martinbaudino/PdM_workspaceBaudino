@@ -27,19 +27,8 @@
 #include "stm32f4xx_nucleo_144.h" 	/* <- BSP include */
 
 /* Exported types ------------------------------------------------------------*/
-typedef enum {
-	BUTTON_UP,
-	BUTTON_FALLING,
-	BUTTON_DOWN,
-	BUTTON_RAISING,
-} debounceState_t;
-#define BOT_ON		0U
-#define BOT_OFF		1U
-
 
 /* Exported constants --------------------------------------------------------*/
-/* P2_1 - Tiempo máximo posible para delay en 10 segggundos */
-#define DELAY_MAX 10000U
 
 /* User can use this section to tailor USARTx/UARTx instance used and associated
  resources */
@@ -63,34 +52,9 @@ typedef enum {
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-/**
- * @fn void debounceFSM_init(void)
- * @brief
- *
- */
 void debounceFSM_init(void);	// debe cargar el estado inicial
-
-/**
- * @fn void debounceFSM_update(void)
- * @brief debe leer las entradas, resolver la lógica de transición de estados
- * 		  y actualizar las salidas
- *
- */
 void debounceFSM_update(void);
-
-
-/**
- * @fn void buttonPressed(void)
- * @brief debe togglear el LED1
- *
- */
 void buttonPressed(void);
-
-/**
- * @fn void buttonReleased(void)
- * @brief debe togglear el LED3
- *
- */
 void buttonReleased(void);
 
 #endif /* __MAIN_H */
