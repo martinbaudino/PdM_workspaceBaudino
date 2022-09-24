@@ -96,6 +96,7 @@ int main(void) {
 
 	/* Infinite loop */
 	while (1) {
+		/* Lee de a 4 caracteres y hace eco y conmuta el LED2 */
 		uartReceiveStringSize(readBuff, SIZE_BUFF);
 		uartSendStringSize(readBuff, SIZE_BUFF);
 		BSP_LED_Toggle(LED2);
