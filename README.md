@@ -21,5 +21,6 @@ Resolución de Trabajos Prácticos de Martín Sebastián Baudino
 * Punto 1: Carpeta **P4_1** - Implementa la MEF para filtro anti-rebotes en la aplicación principal. Ver README.md en carpeta correspondiente.
 * Punto 2: Carpeta **P4_2** - Mueve la MEF a **API_debounce** e implementa conmutación de **LED2** a frecuencia variable persionanro el pulsador **USER**. Ver README.md en carpeta correspondiente.
 
-## Práctiva 5:
+## Práctica 5:
 * Punto 1: Carpeta **P5_1** - Implementa el módulo **API_uart** con interfaz pública en **API_uart.h** e implementación utilizando miembros privados en **API_uart.c**. Si la UART es inicializada correctamente envía sus parámetros de configuración y lee caracteres conmutando un LED. De esta manera se prueban todas las funciones del módulo.
+* Punto 2: Carpeta **P5_2** - Utiliza dentro del archivo **API_debounce.c** el módulo **API_uart** para imprimir dentro de las funciones privadas **buttonPressed** y **buttonReleased** que se ejecutan cada vez que se produce un flanco efectivo.

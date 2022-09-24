@@ -16,7 +16,7 @@ S_DEPS += \
 
 # Each subdirectory must supply rules for building sources it contributes
 Startup/%.o: ../Startup/%.s Startup/subdir.mk
-	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_1/Drivers/STM32F4xx_HAL_Driver/Inc" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_1/Drivers/CMSIS/Include" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_1/Drivers/CMSIS/Device/ST/STM32F4xx/Include" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_1/Drivers/BSP/STM32F4xx_Nucleo_144" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_1/Inc" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_1/Drivers/Core/Inc" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_1/Drivers/API/inc" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_2/Drivers/STM32F4xx_HAL_Driver/Inc" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_2/Drivers/CMSIS/Include" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_2/Drivers/CMSIS/Device/ST/STM32F4xx/Include" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_2/Drivers/BSP/STM32F4xx_Nucleo_144" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_2/Inc" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_2/Drivers/Core/Inc" -I"C:/Embedded/2022-CESE/01-PdM/PdM_workspaceBaudino/P5_2/Drivers/API/inc" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 
 clean: clean-Startup
 

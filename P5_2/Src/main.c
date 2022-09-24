@@ -86,13 +86,17 @@ int main(void) {
 	delay_t led_delay;
 	delayInit(&led_delay, TIME_LED2_A);
 
-	/* P4_1 - Inicializa la MEF */
-	debounceFSM_init();
+
 
 	/* P5_1 - Inicializa la USART3, VirtualCOM port en PC */
-	uint8_t readBuff[SIZE_BUFF];
 	uartInit();
+	/**
+	 * P5_2 - La UART se utiliza dentro del módulo API_debounce por lo que
+	 * se debe inicializar antes que la MEF
+	 * */
 
+	/* P4_1 - Inicializa la MEF */
+	debounceFSM_init();
 
 	/* Infinite loop */
 	while (1) {
@@ -111,12 +115,6 @@ int main(void) {
 		if(delayRead(&led_delay)){
 			BSP_LED_Toggle(LED2);
 		}
-
-		uartReceiveStringSize(readBuff, SIZE_BUFF);
-		uartSendStringSize(readBuff, SIZE_BUFF);
-		BSP_LED_Toggle(LED2);
-
-
 	}
 }
 

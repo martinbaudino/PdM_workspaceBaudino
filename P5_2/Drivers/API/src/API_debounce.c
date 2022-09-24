@@ -6,7 +6,8 @@
  */
 #include "API_debounce.h"
 #include "API_delay.h" // Módulo autocontenido incluye sus dependendcias
-
+/* P5_2 - Utiliza la USART3 para informar cada flanco */
+#include "API_uart.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -131,6 +132,7 @@ void debounceFSM_update(void) {
 static void buttonPressed(void){
 	BSP_LED_Toggle(LED1);
 	pending_pressed = true;
+	uartsendString((uint8_t *)"Button pressed!\r\n");
 }
 
 
@@ -141,6 +143,7 @@ static void buttonPressed(void){
  */
 static void buttonReleased(void){
 	BSP_LED_Toggle(LED3);
+	uartsendString((uint8_t *)"Button released!\r\n");
 }
 
 /**
