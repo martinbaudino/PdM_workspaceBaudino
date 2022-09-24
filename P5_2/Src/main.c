@@ -37,15 +37,8 @@
 #define TIME_LED2_A 100U	// Conmutación cada 100ms
 #define TIME_LED2_B 500U	// Conmutación cada 500ms
 
-#define SIZE_BUFF 4U
-
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-
-
-
-
 /* Private function prototypes -----------------------------------------------*/
 
 static void SystemClock_Config(void);
@@ -115,6 +108,9 @@ int main(void) {
 		if(delayRead(&led_delay)){
 			BSP_LED_Toggle(LED2);
 		}
+
+		/** P5_2 - La transmisión por UART se hace en las detecciones de cambio
+		 * de la MEF en archivo "API_debounce.c" */
 	}
 }
 
